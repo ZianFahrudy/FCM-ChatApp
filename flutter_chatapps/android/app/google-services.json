@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1027172259274",
+    "project_id": "flutter-chatapps",
+    "storage_bucket": "flutter-chatapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027172259274:android:99436d4ee9d105b41cab33",
+        "android_client_info": {
+          "package_name": "com.example.flutter_chatapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027172259274-5blosnh6mbajcqoa39pametmr4v5o7iv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4cemuezjCugyaFc0Bml5-Vc5M-SWILXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027172259274-5blosnh6mbajcqoa39pametmr4v5o7iv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
