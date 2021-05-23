@@ -1,4 +1,7 @@
+import 'dart:io';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(
@@ -7,12 +10,8 @@ class AuthForm extends StatefulWidget {
     Key key,
   }) : super(key: key);
 
-  final void Function(
-    String email,
-    String username,
-    String password,
-    bool isLogin,
-  ) submitFn;
+  final void Function(String email, String username, String password,
+      bool isLogin, File image) submitFn;
 
   bool isLoading;
 
@@ -29,9 +28,25 @@ class _AuthFormState extends State<AuthForm> {
 
   bool _isLogin = true;
 
-  void submitFn() {
+  File _image;
+
+  void submitFn(BuildContext ctx) {
     final isValid = _formKey.currentState.validate();
     FocusScope.of(context).unfocus();
+
+    if (_image == null && !_isLogin) {
+      Flushbar(
+        duration: Duration(seconds: 3),
+        flushbarPosition: FlushbarPosition.BOTTOM,
+        messageText: Text(
+          "Please add image!",
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.pink,
+      ).show(ctx);
+      return;
+    }
+
     if (isValid) {
       _formKey.currentState.save();
 
@@ -40,10 +55,20 @@ class _AuthFormState extends State<AuthForm> {
         _userName.trim(),
         _userPassword,
         _isLogin,
+        _image,
       );
 
       // send field value to firebase
     }
+  }
+
+  void _pickedImage() async {
+    final _pickedFile =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = File(_pickedFile.path);
+    });
   }
 
   @override
@@ -58,6 +83,16 @@ class _AuthFormState extends State<AuthForm> {
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
+                  if (!_isLogin)
+                    GestureDetector(
+                      onTap: _pickedImage,
+                      child: CircleAvatar(
+                        backgroundImage: _image != null
+                            ? FileImage(_image)
+                            : AssetImage("assets/no-image.png"),
+                        radius: 50,
+                      ),
+                    ),
                   TextFormField(
                     onSaved: (v) {
                       _userEmail = v;
@@ -105,7 +140,7 @@ class _AuthFormState extends State<AuthForm> {
                   if (!widget.isLoading)
                     RaisedButton(
                         child: Text(_isLogin ? "Login" : "Sign Up"),
-                        onPressed: submitFn),
+                        onPressed: () => submitFn(context)),
                   SizedBox(
                     height: 20,
                   ),

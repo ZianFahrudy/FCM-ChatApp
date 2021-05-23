@@ -28,8 +28,11 @@ class Message extends StatelessWidget {
           return ListView.builder(
               reverse: true,
               itemCount: data.length,
-              itemBuilder: (context, i) => MessageCard(data[i]['text'],
-                  data[i]['userId'] == user.uid, data[i]['userId']));
+              itemBuilder: (context, i) => MessageCard(
+                  data[i]['text'],
+                  data[i]['userId'] == user.uid,
+                  data[i]['userId'],
+                  data[i]['imageUrl']));
         });
   }
 }
